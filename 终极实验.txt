@@ -1,0 +1,196 @@
+#include <Adafruit_NeoPixel.h>//引用头文件
+#define PIN1 4 
+#define PIN2 6
+#define PIN3 8
+#define PIN_NUM 1 //定义允许接的led灯的个数
+Adafruit_NeoPixel strip1 = Adafruit_NeoPixel(PIN_NUM, PIN1, NEO_GRB + NEO_KHZ800); 
+Adafruit_NeoPixel strip2 = Adafruit_NeoPixel(PIN_NUM, PIN2, NEO_GRB + NEO_KHZ800); 
+Adafruit_NeoPixel strip3 = Adafruit_NeoPixel(PIN_NUM, PIN3, NEO_GRB + NEO_KHZ800); 
+
+#include <IRremote.h>
+#include <U8glib.h>
+#define INTERVAL_LCD             20             //定义OLED刷新时间间隔  
+int RECV_PIN = 10;
+IRrecv irrecv(RECV_PIN);
+decode_results results;
+unsigned long lcd_time = millis(); //OLED刷新时间计时器
+unsigned long salt_time;
+unsigned long sugur_time;
+unsigned long oil_time;
+U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_NONE);     //设置OLED型号  
+//-------字体设置，大、中、小
+#define setFont_L u8g.setFont(u8g_font_7x13)
+#define setFont_M u8g.setFont(u8g_font_fixed_v0r)
+#define setFont_S u8g.setFont(u8g_font_fixed_v0r)
+#define setFont_SS u8g.setFont(u8g_font_fub25n)
+void blink(int num){
+  if(num==1){
+    strip1.setPixelColor(0, strip1.Color(255, 0, 0));
+    strip1.show(); 
+    delay(1000);
+    strip1.setPixelColor(0, strip1.Color(0, 0, 0));
+    strip1.show(); 
+    } 
+  if(num==2){
+    strip2.setPixelColor(0, strip1.Color(0, 255, 0));
+    strip2.show(); 
+    delay(1000);
+    strip2.setPixelColor(0, strip1.Color(0, 0, 0));
+    strip2.show(); 
+    } 
+  
+  if(num==3){
+    strip3.setPixelColor(0, strip1.Color(0, 0, 255));
+    strip3.show(); 
+    delay(1000);
+    strip3.setPixelColor(0, strip1.Color(0, 0, 0));
+    strip3.show(); 
+    } 
+  if(num==4){
+    strip1.setPixelColor(0, strip1.Color(255, 0, 0));
+    strip1.show(); 
+    strip2.setPixelColor(0, strip1.Color(0, 255, 0));
+    strip2.show(); 
+    strip3.setPixelColor(0, strip1.Color(0, 0, 255));
+    strip3.show(); 
+    delay(1000);
+    strip1.setPixelColor(0, strip1.Color(0, 0, 0));
+    strip1.show(); 
+    strip2.setPixelColor(0, strip1.Color(0, 0, 0));
+    strip2.show(); 
+    strip3.setPixelColor(0, strip1.Color(0, 0, 0));
+    strip3.show(); 
+    } 
+  }
+void tomato_and_egg(){
+    Serial.println("西红柿炒鸡蛋");
+  u8g.firstPage();
+  do {
+      setFont_L;
+      u8g.setPrintPos(4, 16);
+      u8g.print("tomato and egg");
+  }
+  while( u8g.nextPage() );
+  salt_time=3000;
+  sugur_time=6000;
+  oil_time=9000;
+  delay(salt_time);
+  Serial.println("盐");
+  u8g.firstPage();
+  do {
+      setFont_L;
+      u8g.setPrintPos(4, 16);
+      u8g.print("salt");
+  }
+  while( u8g.nextPage() );
+  blink(1);
+  delay(sugur_time-salt_time);
+  Serial.println("糖");
+  u8g.firstPage();
+  do {
+      setFont_L;
+      u8g.setPrintPos(4, 16);
+      u8g.print("sugar");
+  }
+  while( u8g.nextPage() );
+  blink(2);  
+  delay(oil_time-sugur_time);
+  Serial.println("油");
+  u8g.firstPage();
+  do {
+      setFont_L;
+      u8g.setPrintPos(4, 16);
+      u8g.print("oil");
+  }
+  while( u8g.nextPage() );
+  blink(3);
+  delay(3000);
+  Serial.println("出菜!!!");
+  u8g.firstPage();
+  do {
+      setFont_L;
+      u8g.setPrintPos(4, 16);
+      u8g.print("Finish!!!");
+  }
+  while( u8g.nextPage() );  
+  blink(4);
+  }
+
+void steak(){
+   Serial.println("牛排");
+  u8g.firstPage();
+  do {
+      setFont_L;
+      u8g.setPrintPos(4, 16);
+      u8g.print("steak");
+  }
+  while( u8g.nextPage() );
+
+  salt_time=5000;
+  sugur_time=10000;
+  oil_time=15000;
+  delay(salt_time);
+  Serial.println("盐");
+  u8g.firstPage();
+  do {
+      setFont_L;
+      u8g.setPrintPos(4, 16);
+      u8g.print("salt");
+  }
+  while( u8g.nextPage() );  
+  blink(1);
+  delay(sugur_time-salt_time);
+  Serial.println("糖");
+  u8g.firstPage();
+  do {
+      setFont_L;
+      u8g.setPrintPos(4, 16);
+      u8g.print("sugar");
+  }
+  while( u8g.nextPage() );
+  blink(2);
+  delay(oil_time-sugur_time);
+  Serial.println("油");
+  u8g.firstPage();
+  do {
+      setFont_L;
+      u8g.setPrintPos(4, 16);
+      u8g.print("oil");
+  }
+  while( u8g.nextPage() );
+  blink(3);
+  delay(3000);
+  Serial.println("出菜!!!");
+  u8g.firstPage();
+  do {
+      setFont_L;
+      u8g.setPrintPos(4, 16);
+      u8g.print("Finish!!!");
+  }
+  while( u8g.nextPage() ); 
+  blink(4); 
+  }
+
+void zuocai(long int result){
+  switch (result)
+  {
+  case 33456255: tomato_and_egg();break;
+  case 33439935: steak();break;
+   }
+}
+void setup() {
+    Serial.begin(9600);
+    irrecv.enableIRIn(); // 启动红外解码
+    Serial.println("Initialisation complete.");
+    strip1.begin();
+    strip2.begin();
+    strip3.begin();
+}
+void loop() {
+  if (irrecv.decode(&results)) {
+
+     zuocai(results.value);
+  
+    irrecv.resume();  //接收下一个值
+  }  
+}
